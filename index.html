@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雅思听力 Part 1 · 听写自测</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Noto+Serif+SC:wght@400;600;700&display=swap');
+
+  :root {
+    --ink: #2c2416;
+    --ink-light: #6b5e4a;
+    --ink-muted: #9b8e7a;
+    --paper: #faf7f0;
+    --card: #fffef9;
+    --border: #e5ded0;
+    --border-focus: #c4b998;
+    --accent: #8b1a2b;
+    --accent-hover: #a01d30;
+    --navy: #1e3a4c;
+    --navy-light: #2d5568;
+    --gold: #b8944c;
+    --correct: #e8f0e4;
+    --correct-text: #3d6237;
+    --wrong: #f9ecec;
+    --wrong-text: #9b3a3a;
+    --input-bg: #fdfcf7;
+    --shadow: 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 2px 8px rgba(0,0,0,.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+    background: var(--paper);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(180,150,100,.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(140,160,180,.05) 0%, transparent 60%);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── header ── */
+  header {
+    background: transparent;
+    color: var(--ink);
+    padding: 56px 0 44px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+  header h1 {
+    font-family: "Playfair Display", "Noto Serif SC", "Georgia", serif;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--ink);
+  }
+  header h1 em { font-style: italic; color: var(--accent); }
+  header .subtitle {
+    font-family: "Noto Serif SC", "Songti SC", serif;
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+  header .rule {
+    width: 60px; height: 2px; background: var(--accent);
+    margin: 20px auto 0;
+  }
+
+  /* ── layout ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ── controls ── */
+  .controls {
+    display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    justify-content: center; margin-bottom: 14px;
+  }
+  .controls label {
+    font-size: 13px; color: var(--ink-muted); white-space: nowrap;
+    font-family: "Noto Serif SC", serif; letter-spacing: .5px;
+  }
+  .controls select, .controls button {
+    font-size: 13px; padding: 9px 16px;
+    border: 1px solid var(--border); border-radius: 3px;
+    background: var(--card); cursor: pointer;
+    font-family: "Noto Serif SC", "PingFang SC", sans-serif;
+    color: var(--ink); transition: all .2s;
+  }
+  .controls select { min-width: 170px; }
+  .controls select:focus { outline: none; border-color: var(--border-focus); }
+  .controls button {
+    font-weight: 600; letter-spacing: .5px; border: none;
+    color: #fff; background: var(--ink);
+    padding: 9px 20px;
+  }
+  .controls button:hover { background: #3d3322; }
+  .controls button.secondary {
+    background: transparent; color: var(--ink); border: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .controls button.secondary:hover { background: #f5f1e8; border-color: var(--border-focus); }
+  .controls button.dictation {
+    background: var(--accent); color: #fff; border: none;
+  }
+  .controls button.dictation:hover { background: var(--accent-hover); }
+  .controls button.dictation.running {
+    background: #c67a1a;
+  }
+  .controls select.speed-select { min-width: 90px; }
+
+  /* ── listening highlight ── */
+  .question-row.listening {
+    border-color: var(--gold); border-width: 1px;
+    box-shadow: 0 0 0 2px rgba(184,148,76,.15);
+    background: #fefdf8;
+  }
+  .question-row .replay-btn {
+    background: none; border: 1px solid var(--border); border-radius: 3px;
+    cursor: pointer; font-size: 14px; padding: 5px 9px; line-height: 1;
+    transition: all .2s; color: var(--ink-muted);
+  }
+  .question-row .replay-btn:hover { background: #f5f1e8; border-color: var(--border-focus); }
+
+  /* ── info bar ── */
+  .info-bar {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px; font-size: 13px; color: var(--ink-muted);
+    padding: 0 4px;
+  }
+  .info-bar .source-label {
+    font-family: "Playfair Display", "Georgia", serif;
+    font-style: italic; color: var(--ink-light); font-size: 14px;
+  }
+  .info-bar .scene-badge {
+    background: transparent; color: var(--accent);
+    padding: 2px 0; font-size: 11px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  /* ── legend ── */
+  .legend {
+    text-align: center; font-size: 12px; color: var(--ink-muted);
+    margin-bottom: 20px; letter-spacing: .5px;
+  }
+
+  /* ── dictation list ── */
+  .question-list { display: flex; flex-direction: column; gap: 8px; }
+  .question-row {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--card); padding: 12px 20px;
+    border: 1px solid var(--border);
+    transition: all .25s;
+  }
+  .question-row:first-child { border-radius: 4px 4px 0 0; }
+  .question-row:last-child { border-radius: 0 0 4px 4px; }
+  .question-row:only-child { border-radius: 4px; }
+  .question-row + .question-row { border-top: none; }
+  .question-row:first-child { border-radius: 4px 4px 0 0; }
+  .question-row:last-child { border-radius: 0 0 4px 4px; }
+  .question-row:only-child { border-radius: 4px; }
+
+  .question-row.correct { background: var(--correct); border-color: #c8d8c4; }
+  .question-row.wrong   { background: var(--wrong); border-color: #e0c8c8; }
+  .question-num {
+    font-family: "Playfair Display", "Georgia", serif;
+    font-weight: 500; font-size: 15px; min-width: 32px;
+    color: var(--ink-muted); flex-shrink: 0; text-align: center;
+    font-style: italic;
+  }
+  .question-row input {
+    flex: 1; font-size: 15px; padding: 10px 14px;
+    border: none; border-bottom: 1px solid var(--border);
+    background: transparent; font-family: "Georgia", "Noto Serif SC", serif;
+    transition: border-color .2s; text-align: center;
+    color: var(--ink); letter-spacing: .5px;
+    border-radius: 0;
+  }
+  .question-row input:focus {
+    outline: none; border-bottom-color: var(--ink);
+  }
+  .question-row input:disabled {
+    color: var(--ink-muted); border-bottom-style: dotted;
+  }
+  .question-row .feedback {
+    font-size: 12px; min-width: 100px; max-width: 170px;
+    line-height: 1.6; flex-shrink: 0; text-align: right;
+    font-family: "Noto Serif SC", serif;
+  }
+  .question-row .feedback .answer {
+    color: var(--wrong-text); font-weight: 600;
+  }
+  .question-row .feedback .correct-mark {
+    color: var(--correct-text); font-weight: 600;
+  }
+
+  /* ── submit button area ── */
+  .submit-area {
+    text-align: center; margin-top: 28px;
+  }
+  .submit-area button {
+    font-family: "Noto Serif SC", serif; font-size: 14px;
+    padding: 12px 48px; letter-spacing: 2px;
+    border: 1px solid var(--ink); background: transparent;
+    color: var(--ink); cursor: pointer; transition: all .25s;
+  }
+  .submit-area button:hover {
+    background: var(--ink); color: #fff;
+  }
+
+  /* ── score bar ── */
+  .score-bar {
+    display: flex; justify-content: center; align-items: baseline; gap: 40px;
+    margin-top: 28px; padding: 24px 20px;
+    background: var(--card); border: 1px solid var(--border);
+  }
+  .score-bar .score-wrapper {
+    text-align: center;
+  }
+  .score-bar .score {
+    font-family: "Playfair Display", "Georgia", serif;
+    font-size: 48px; font-weight: 500; color: var(--ink);
+    line-height: 1;
+  }
+  .score-bar .score-outof {
+    font-size: 18px; color: var(--ink-muted);
+  }
+  .score-bar .label {
+    font-size: 13px; color: var(--ink-muted);
+    font-family: "Noto Serif SC", serif; letter-spacing: 1px;
+  }
+  .score-bar .label span {
+    font-weight: 700; color: var(--ink); font-size: 18px;
+  }
+
+  /* ── new game ── */
+  .new-game-wrap { text-align: center; margin-top: 24px; }
+  .new-game-wrap button {
+    font-family: "Noto Serif SC", serif; font-size: 13px;
+    padding: 10px 32px; letter-spacing: 1px;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--ink-muted); cursor: pointer; transition: all .2s;
+  }
+  .new-game-wrap button:hover {
+    border-color: var(--ink); color: var(--ink);
+  }
+
+  /* ── history ── */
+  .history-section {
+    margin-top: 56px; padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .history-toggle {
+    font-size: 13px; color: var(--ink-muted); cursor: pointer;
+    font-family: "Noto Serif SC", serif; letter-spacing: 1px;
+    transition: color .2s;
+    text-decoration: none; border-bottom: 1px dotted var(--border);
+    padding-bottom: 2px;
+  }
+  .history-toggle:hover { color: var(--ink); border-bottom-color: var(--ink); }
+  .history-panel { display: none; margin-top: 24px; }
+  .history-panel.open { display: block; }
+  .history-stats {
+    display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
+    justify-content: center; text-align: center;
+    padding: 18px 24px; background: var(--card); border: 1px solid var(--border);
+    margin-bottom: 20px; font-size: 13px; letter-spacing: .5px;
+  }
+  .history-stats strong { color: var(--accent); font-weight: 600; }
+  .history-entry {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 14px 20px; margin-bottom: 6px; font-size: 13px;
+    cursor: pointer; transition: all .2s;
+  }
+  .history-entry:hover { border-color: var(--border-focus); }
+  .history-entry .entry-header {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .history-entry .entry-score {
+    font-family: "Playfair Display", serif;
+    font-weight: 500; font-size: 17px;
+  }
+  .history-entry .entry-score.good { color: var(--correct-text); }
+  .history-entry .entry-score.bad { color: var(--wrong-text); }
+  .history-entry .entry-detail {
+    display: none; margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .history-entry.open .entry-detail { display: block; }
+  .wrong-tag {
+    display: inline-block; background: var(--wrong); color: var(--wrong-text);
+    padding: 3px 10px; border-radius: 2px; margin: 3px 5px; font-size: 12px;
+    cursor: pointer; transition: background .15s;
+  }
+  .wrong-tag:hover { background: #f0d8d8; }
+  .review-badge {
+    background: #faf5ea; color: #8b6914; padding: 3px 12px;
+    border-radius: 2px; font-size: 11px; font-weight: 600; margin-left: 8px;
+    letter-spacing: .5px;
+  }
+  .history-actions {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;
+    justify-content: center;
+  }
+  .history-actions button {
+    font-family: "Noto Serif SC", serif; font-size: 12px;
+    padding: 7px 16px; letter-spacing: .5px;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--ink-muted); cursor: pointer; transition: all .2s;
+  }
+  .history-actions button:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* ── responsive: tablet ── */
+  @media (max-width: 680px) {
+    .container { padding: 0 14px 60px; }
+    header { padding: 36px 16px 28px; }
+    header h1 { font-size: 28px; }
+    header .subtitle { font-size: 12px; }
+  }
+
+  /* ── responsive: phone ── */
+  @media (max-width: 480px) {
+    body { font-size: 14px; }
+
+    header { padding: 28px 12px 22px; margin-bottom: 28px; }
+    header h1 { font-size: 22px; letter-spacing: 1px; }
+    header .subtitle { font-size: 11px; }
+    header .rule { margin: 14px auto 0; }
+
+    .container { padding: 0 10px 48px; max-width: 100%; }
+
+    /* controls — stack everything, full width */
+    .controls {
+      flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+    }
+    .controls label { font-size: 12px; }
+    .controls select { min-width: 0; flex: 1; font-size: 12px; padding: 8px 10px; }
+    .controls select.speed-select { min-width: 0; flex: 1; }
+    .controls button {
+      font-size: 12px; padding: 8px 14px; white-space: nowrap;
+    }
+
+    /* info bar */
+    .info-bar { flex-direction: column; gap: 4px; align-items: flex-start; }
+    .info-bar .source-label { font-size: 12px; }
+
+    /* question rows */
+    .question-list { gap: 6px; }
+    .question-row {
+      padding: 10px 10px; gap: 8px; align-items: center;
+    }
+    .question-num { font-size: 13px; min-width: 24px; }
+    .question-row input {
+      font-size: 14px; padding: 10px 8px; min-width: 0;
+    }
+    .question-row .replay-btn {
+      font-size: 12px; padding: 6px 8px; min-width: 36px; min-height: 36px;
+    }
+    .question-row .feedback {
+      min-width: 0; max-width: 90px; font-size: 10px; line-height: 1.4;
+    }
+
+    /* submit */
+    .submit-area { margin-top: 20px; }
+    .submit-area button { font-size: 13px; padding: 12px 36px; width: 100%; max-width: 280px; }
+
+    /* score */
+    .score-bar {
+      flex-direction: column; align-items: center; gap: 12px;
+      padding: 18px 14px; margin-top: 20px;
+    }
+    .score-bar .score { font-size: 40px; }
+
+    /* history */
+    .history-section { margin-top: 36px; padding-top: 28px; }
+    .history-stats { flex-direction: column; align-items: center; gap: 6px; padding: 14px 16px; font-size: 12px; overflow-wrap: break-word; }
+    .history-entry { padding: 12px 14px; overflow: hidden; }
+    .history-entry .entry-header { flex-direction: column; gap: 4px; align-items: flex-start; }
+    .history-entry .entry-header span { overflow-wrap: break-word; }
+    .history-entry .entry-score { font-size: 15px; flex-shrink: 0; white-space: nowrap; }
+    .history-entry .entry-detail { overflow-wrap: break-word; }
+    .history-actions { gap: 6px; }
+    .history-actions button { font-size: 11px; padding: 7px 12px; white-space: nowrap; }
+    .wrong-tag { margin: 2px 3px; }
+
+    /* legend */
+    .legend { font-size: 10px; margin-bottom: 14px; }
+
+    /* new game */
+    .new-game-wrap button { font-size: 12px; padding: 10px 24px; }
+  }
+
+  /* ── tiny phone ── */
+  @media (max-width: 360px) {
+    .question-row { padding: 8px 6px; gap: 4px; }
+    .question-num { font-size: 12px; min-width: 20px; }
+    .question-row input { font-size: 13px; padding: 8px 4px; }
+    .question-row .replay-btn { font-size: 10px; padding: 5px 6px; min-width: 28px; min-height: 28px; }
+    .question-row .feedback { max-width: 60px; font-size: 9px; }
+    .controls button { font-size: 11px; padding: 7px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>The IELTS <em>Part One</em> Dictation</h1>
+  <div class="subtitle">IELTS 听力 Part 1 · 听写自测 · 二〇二四 — 二〇二六</div>
+  <div class="subtitle" style="font-size:12px;margin-top:6px">机经答案词汇 · 源自考生回忆 · 仅供参考</div>
+  <div class="rule"></div>
+</header>
+
+<div class="container">
+
+  <!-- ── controls ── -->
+  <div class="controls">
+    <label for="scene-select">场景</label>
+    <select id="scene-select">
+      <option value="all">全部场景（随机抽题）</option>
+      <option value="随机10题">随机10题模式</option>
+    </select>
+    <button id="start-btn">换一批</button>
+    <label style="cursor:pointer;font-size:12px;color:var(--ink-muted);border:1px solid var(--border);padding:7px 12px;border-radius:3px;font-family:inherit;letter-spacing:.5px;transition:all .2s" onmouseenter="this.style.borderColor='var(--ink)'" onmouseleave="this.style.borderColor='var(--border)'">
+      导入<input type="file" id="import-file" accept=".csv" style="display:none" onchange="importCSV(event)">
+    </label>
+    <button onclick="exportCSV()" style="font-size:12px;padding:7px 12px;background:transparent;color:var(--ink-muted);border:1px solid var(--border);font-weight:400;letter-spacing:.5px" onmouseenter="this.style.borderColor='var(--ink)'" onmouseleave="this.style.borderColor='var(--border)'">导出</button>
+    <button id="reset-db-btn" onclick="resetDB()" style="display:none;font-size:12px;padding:7px 12px;background:transparent;color:var(--wrong-text);border:1px solid var(--border);font-weight:400;letter-spacing:.5px">重置</button>
+  </div>
+  <div class="controls">
+    <label for="speed-select">语速</label>
+    <select id="speed-select" class="speed-select">
+      <option value="0.8">慢</option>
+      <option value="1.0" selected>正常</option>
+      <option value="1.2">快</option>
+    </select>
+    <label for="gap-select">间隔</label>
+    <select id="gap-select" class="speed-select">
+      <option value="3.0">3 s</option>
+      <option value="5.0" selected>5 s</option>
+      <option value="7.0">7 s</option>
+    </select>
+    <label for="voice-select">语音</label>
+    <select id="voice-select" class="speed-select" style="min-width:120px" onchange="onVoiceChange()"></select>
+    <button onclick="testVoice()" style="font-size:12px;padding:7px 12px;background:transparent;border:1px solid var(--border);color:var(--ink-muted);cursor:pointer;font-family:inherit;border-radius:3px" title="试听当前语音">试听</button>
+    <button id="dictation-btn" class="dictation">开始听写</button>
+  </div>
+
+  <!-- ── info ── -->
+  <div class="info-bar">
+    <span class="source-label" id="source-info"></span>
+    <span class="scene-badge" id="scene-badge"></span>
+  </div>
+
+  <!-- ── legend ── -->
+  <div class="legend">
+    <span style="color:var(--correct-text)">●</span> 正确
+    <span style="color:var(--wrong-text);margin-left:10px">●</span> 错误
+    &nbsp;·&nbsp; 不区分大小写 &nbsp;·&nbsp; 单复数须一致
+  </div>
+
+  <!-- ── questions ── -->
+  <div class="question-list" id="question-list"></div>
+
+  <div class="submit-area">
+    <button id="check-btn">提交批改</button>
+  </div>
+
+  <!-- ── score ── -->
+  <div class="score-bar" id="score-bar" style="display:none">
+    <div class="score-wrapper">
+      <div><span class="score" id="score-num">0</span><span class="score-outof"> / 10</span></div>
+    </div>
+    <div class="label">正确率 <span id="score-pct">0%</span></div>
+  </div>
+
+  <div class="new-game-wrap" id="new-game-wrap" style="display:none">
+    <button onclick="startNew()">再来一批</button>
+  </div>
+
+  <!-- ── history ── -->
+  <div class="history-section">
+    <div style="text-align:center">
+      <span class="history-toggle" id="history-toggle" onclick="toggleHistory()">历史记录</span>
+    </div>
+    <div class="history-panel" id="history-panel">
+      <div class="history-stats" id="history-stats"></div>
+      <div class="history-actions">
+        <button id="review-btn" onclick="startReviewMode()">复习全部错词</button>
+        <button onclick="exportWrongWords()">导出错词 CSV</button>
+        <button onclick="clearHistory()">清空记录</button>
+      </div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:48px;font-size:12px;color:var(--ink-muted);letter-spacing:.5px;line-height:2">
+    如有问题，请查阅使用手册或联系微信（longyao0321）
+  </div>
+</div>
+
+<script>
+// ═══════════════════ 47场考试数据 ═══════════════════
+
+const WORD_SETS = [
+  // === 2024 (19场) ===
+  { scene:"日常服务", date:"2024.01.06", topic:"医疗中心注册", words:["Prestney","17 March","34 Market Road","European","citizen","high user","Castle","North","full time","sports"] },
+  { scene:"日常服务", date:"2024.01.27", topic:"失物招领", words:["Rachel","Marine","23 March","42A","cream","long strap","nylon","jeans","CDs","320"] },
+  { scene:"求职咨询", date:"2024.02.03", topic:"超市求职", words:["Market Street","Sunday","customers","cleaning","communication","punctual","training","23 June","0255674369","passport"] },
+  { scene:"旅游出行", date:"2024.02.24", topic:"旅游咨询", words:["moderate","park","pool","museum","flowers","cafe","No.279","5.30","Bridge","map"] },
+  { scene:"日常服务", date:"2024.03.16", topic:"垃圾回收分类", words:["Tuesday","8.15","grocery stores","TV","categories","egg","juice","labels","pizza","map"] },
+  { scene:"购物消费", date:"2024.03.23", topic:"定制珠宝", words:["0422757986","garden","coin","flower","50","stone","child","Tracey","73","student"] },
+  { scene:"求职咨询", date:"2024.04.27", topic:"顾客投诉太阳能", words:["12 November","Tuesday","neighbor","33 Jaydell Avenue","0450775231","noise","450","screen","size","color"] },
+  { scene:"活动/课程", date:"2024.05.18", topic:"电话咨询俱乐部", words:["club house","male actors","singers","shuttle services","August","6pm Tuesday","dinner","25","modern authors","hospital"] },
+  { scene:"活动/课程", date:"2024.05.25", topic:"演出票务咨询", words:["New opera","30 pounds","theatre","library","town hall","studio","","","",""] },
+  { scene:"求职咨询", date:"2024.06.01", topic:"电话面试求职", words:["Elsinore Court","077896245","waiter","baseball coach","rescue driver","diving","October","Saturday","6","radio"] },
+  { scene:"活动/课程", date:"2024.07.06", topic:"儿童活动中心", words:["North Hill","parking","drink","slide","golf courses","trousers","socks","label","8","decorations"] },
+  { scene:"求职咨询", date:"2024.08.24", topic:"儿童户外活动报名", words:["instructor","65","certificate","shoes","waterproof","jeans","snack","bridge","doctor","photographs"] },
+  { scene:"求职咨询", date:"2024.08.31", topic:"志愿者申请", words:["62 Miled Street","Chinese","shopping","socialize","drive","South","Wednesday","13th June","stairs","radio"] },
+  { scene:"求职咨询", date:"2024.10.12", topic:"工作求职", words:["Station Road","Sunday","lifting","watering","communication","math","2.35","Rapana","0213038874","passport"] },
+  { scene:"住宿预订", date:"2024.11.02", topic:"酒店预订", words:["35 people","Saturday","Limertick","business area","5th floor","good view","week","gym","65%","044298611"] },
+  { scene:"求职咨询", date:"2024.11.23", topic:"度假酒店求职", words:["Carilly island","ferry company","airport","family","parties","sing","experience","training","free meals","13 July"] },
+  { scene:"日常服务", date:"2024.12.07", topic:"当地居民团体", words:["festival","supermarket","new school","nature","cafe","Thursday","month","history","factory","fields"] },
+  { scene:"活动/课程", date:"2024.12.14", topic:"幼儿园咨询", words:["37.50","20","playground","primary school","weekly report","September","apron","sunglasses","family photo","doctor"] },
+  { scene:"住宿预订", date:"2024.12.28", topic:"酒店餐厅预订", words:["Waterworth","birthday","78","children","India","1050","cake","guitar","Wednesday","review"] },
+  // === 2025 (22场) ===
+  { scene:"课程咨询", date:"2025.01.04", topic:"社区教育信息", words:["Hokitika","adult","month","health","mending","wood","weather","experience","toys","machine"] },
+  { scene:"住宿预订", date:"2025.01.11", topic:"房屋推介", words:["microwave","reception","shower","lake","18","tennie","fishing","farm","forest","Arataki"] },
+  { scene:"旅游出行", date:"2025.01.18", topic:"热气球旅行", words:["lawyer","90","helicopter","480","90","flowers","birds","model","","park"] },
+  { scene:"活动/课程", date:"2025.02.08", topic:"托管所咨询", words:["5.45","singing","painting","sandwich","","coat","pillow","medicine","degree",""] },
+  { scene:"日常服务", date:"2025.02.22", topic:"医院筹款", words:["hospital","Battersby","toy","soccer","ambulance","paper","clothing","Coffee","plants","02745489017"] },
+  { scene:"活动/课程", date:"2025.03.08", topic:"儿童课程咨询", words:["7.45","62.5","map","blog","music","trip","hats","medicine","dentist","Lovelock"] },
+  { scene:"求职咨询", date:"2025.03.15", topic:"找工作", words:["February","Monday","magazine","communication","journalism","restaurant","","","",""] },
+  { scene:"住宿预订", date:"2025.03.22", topic:"寄宿家庭", words:["Warburton","eggs","fruit","6.30","desk","shampoo","90 minutes","ironing","key","2901"] },
+  { scene:"日常服务", date:"2025.03.29", topic:"生活基础设施", words:["airport","clothes","Chinese","Hekerua","coffee","doctor","school","swimming","film","park"] },
+  { scene:"活动/课程", date:"2025.04.05", topic:"咨询机构课程", words:["brushes","violin","photography","15.50","Eagle","3","cakes","Anneka","01375996248",""] },
+  { scene:"日常服务", date:"2025.04.12", topic:"汽车维护教程", words:["Cinema","Room 12","Tuesday","September","safe","tools","coffee","cinema","Ridley",""] },
+  { scene:"日常服务", date:"2025.04.19", topic:"社区二手回收", words:["library","mirror","chairs","4:30","plastic","school","bottles","magazines","batteries","23.50"] },
+  { scene:"住宿预订", date:"2025.04.26", topic:"生日会预定", words:["7:45","celebration","vegetarian","strawberries","cheese","disco","flowers","congratulations","taxi","07749132760"] },
+  { scene:"求职咨询", date:"2025.05.10", topic:"照看孩子", words:["Gray","0491577248","September 29th","3","pool","car","lemon","couple","smoking","police"] },
+  { scene:"活动/课程", date:"2025.05.17", topic:"音乐节咨询", words:["Monday","Kilderstow","tent","145","20","Jazz","fireworks","chocolate","World","Children"] },
+  { scene:"求职咨询", date:"2025.05.24", topic:"申请工作", words:["furniture","finance","advertising","tourism","Italian","January","dancing","museum","guest","map"] },
+  { scene:"购物消费", date:"2025.06.14", topic:"女士网购对话", words:["Shreveport","4020113","October","pvtw","boat","leather","purple","medium","magazine","regular"] },
+  { scene:"活动/课程", date:"2025.06.28", topic:"夏令营咨询", words:["44","180","horse","canoe","caves","helmet","pasta","village","basketball","butter"] },
+  { scene:"日常服务", date:"2025.07.05", topic:"慈善晚餐", words:["new","Grant","buffet","stoves","microwave","dishwasher","driveway","13","garden project","neighbour"] },
+  { scene:"活动/课程", date:"2025.07.19", topic:"露营咨询", words:["summer","lake","nutrition","soccer","safety","fire","speaker","swimming","Puslinch","4.15"] },
+  { scene:"住宿预订", date:"2025.08.30", topic:"租房咨询", words:["station","traffic","modern","SHERFIELD","2 years","garden","10 months","parking","lake","gym"] },
+  { scene:"住宿预订", date:"2025.09.13", topic:"租房中介咨询", words:["01272582674","agency","square","7.30","busy","cinema","Scotland","Artists","Parking",""] },
+  { scene:"购物消费", date:"2025.09.27", topic:"顾客订单表", words:["solution","","evening","battery","Eagle","premium","Airport","1850","manual",""] },
+  { scene:"住宿预订", date:"2025.10.11", topic:"轮船酒店预订", words:["Crawley","furniture","0132472866","Market","9 July","training","station","Forest","Singer","18"] },
+  { scene:"活动/课程", date:"2025.10.25", topic:"儿童游泳课程", words:["Rafael","babies","smart","combination","Thursday","outdoor","family","6128245468","nuts","magazine"] },
+  { scene:"保险理赔", date:"2025.11.01", topic:"旅游保险咨询", words:["knee","winter sports","horse riding","27.08.1999","ear","back","Silver","125","07753424587","advertisement"] },
+  { scene:"活动/课程", date:"2025.12.06", topic:"Folk Festival咨询", words:["June","12 years","Donaldson","ticket","Thursday","light","concert","headaches","nurse","sunscreen"] },
+  // === 2026 (6场) ===
+  { scene:"住宿预订", date:"2026.01.24", topic:"酒店预订", words:["sixth","view","drinks","Saturday","Copthall","balcony","band","September","3 weeks","041718867188"] },
+  { scene:"住宿预订", date:"2026.01.31", topic:"酒店周年庆预定", words:["13 June","conference room","mixed table","vegetarian","chicken","microphone","laptop","projector","music","twin room"] },
+  { scene:"活动/课程", date:"2026.03.14", topic:"健身俱乐部会员", words:["285","parking","September","glass","orientation","TV","judo","yoga","intermediate","8.30"] },
+  { scene:"旅游出行", date:"2026.03.21", topic:"昆士兰公园活动", words:["train","sharks","June","Africa","member","birds","hospital","movie","Hatton","6"] },
+  { scene:"活动/课程", date:"2026.05.16", topic:"表演课程workshop", words:["Jan Creswick","Writing for theatre","20 Gregory Place","waitress","13th June","5.30","milk","comedy","Internet","leaflet"] },
+  { scene:"", date:"", topic:"", words:["","","","","","","","","",""] }, // trailing comma-safe
+];
+// remove trailing empty entry
+const sets = WORD_SETS.slice(0,-1); WORD_SETS.length = 0; WORD_SETS.push(...sets);
+
+// ═══════════════ CSV import/export ═══════════════
+const DB_KEY = "ielts-p1-custom-wordsets";
+
+function getActiveWordSets() {
+  try {
+    const custom = localStorage.getItem(DB_KEY);
+    if (custom) return JSON.parse(custom);
+  } catch(e) {}
+  return WORD_SETS;
+}
+
+function exportCSV() {
+  const sets = getActiveWordSets();
+  let csv = "scene,date,topic,word31,word32,word33,word34,word35,word36,word37,word38,word39,word40\n";
+  sets.forEach(s => {
+    const words = s.words.concat(Array(10).fill("")).slice(0, 10);
+    csv += [s.scene, s.date, s.topic, ...words].map(x => '"' + (x || "").replace(/"/g, '""') + '"').join(",") + "\n";
+  });
+  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "ielts-p1-word-sets.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+    if (lines.length < 2) { alert("CSV 格式错误"); return; }
+    const sets = [];
+    for (let i = 1; i < lines.length; i++) {
+      const cols = parseCSVLine(lines[i]);
+      if (cols.length < 4) continue;
+      const scene = (cols[0] || "").trim();
+      const date = (cols[1] || "").trim();
+      const topic = (cols[2] || "").trim();
+      const words = cols.slice(3, 13).map(w => (w || "").trim()).filter(Boolean);
+      while (words.length < 10) words.push("");
+      if (scene && topic && words.some(w => w)) {
+        sets.push({ scene, date, topic, words: words.slice(0, 10) });
+      }
+    }
+    if (sets.length === 0) { alert("未解析到有效数据，请检查 CSV 格式"); return; }
+    localStorage.setItem(DB_KEY, JSON.stringify(sets));
+    rebuildSceneSelect();
+    document.getElementById("reset-db-btn").style.display = "";
+    alert("已导入 " + sets.length + " 套题目，刷新页面或点「换一批」生效");
+    startNew();
+  };
+  reader.readAsText(file, "UTF-8");
+  event.target.value = "";
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let current = "";
+  let inQuotes = false;
+  for (const ch of line) {
+    if (inQuotes) {
+      if (ch === '"') {
+        if (current.endsWith('"')) { current += '"'; }
+        inQuotes = false;
+      } else { current += ch; }
+    } else {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { result.push(current); current = ""; }
+      else { current += ch; }
+    }
+  }
+  result.push(current);
+  return result;
+}
+
+function resetDB() {
+  if (confirm("恢复为默认内置词库？你导入的数据将被清除。")) {
+    localStorage.removeItem(DB_KEY);
+    rebuildSceneSelect();
+    document.getElementById("reset-db-btn").style.display = "none";
+    startNew();
+  }
+}
+
+function rebuildSceneSelect() {
+  const sets = getActiveWordSets();
+  const scenes = [...new Set(sets.map(s => s.scene))];
+  const sel = document.getElementById("scene-select");
+  sel.innerHTML = `
+    <option value="all">全部场景（随机抽题）</option>
+    <option value="随机10题">🎲 随机10题模式</option>
+  `;
+  scenes.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    sel.appendChild(opt);
+  });
+}
+
+// ═══════════════ scene list ═══════════════
+const SCENES = [...new Set(WORD_SETS.map(s => s.scene))];
+const select = document.getElementById("scene-select");
+SCENES.forEach(s => {
+  const opt = document.createElement("option");
+  opt.value = s;
+  opt.textContent = s;
+  select.appendChild(opt);
+});
+
+// ═══════════════ normalize ═══════════════
+function norm(s) {
+  return (s || "").trim().toLowerCase().replace(/[,\s]+/g, " ").replace(/[^a-z0-9 ]/g, "");
+}
+
+// ═══════════════ state ═══════════════
+let currentSet = null;
+let currentSource = "";
+let checked = false;
+
+// ═══════════════ pick & render ═══════════════
+function pickSet() {
+  const scene = select.value;
+  let pool;
+  const activeDB = getActiveWordSets();
+  if (scene === "all") {
+    pool = activeDB.filter(w => w.words.filter(x => x).length === 10);
+  } else if (scene === "随机10题") {
+    pool = activeDB.filter(w => w.words.filter(x => x).length === 10);
+  } else {
+    pool = activeDB.filter(w => w.scene === scene && w.words.filter(x => x).length === 10);
+  }
+  if (pool.length === 0) {
+    pool = activeDB.filter(w => w.words.filter(x => x).length === 10);
+  }
+
+  if (scene === "随机10题") {
+    const src = pool[Math.floor(Math.random() * pool.length)];
+    const allWords = pool.flatMap(s => s.words.filter(w => w));
+    const shuffled = [...allWords].sort(() => Math.random() - 0.5);
+    const picked = shuffled.slice(0, 10);
+    currentSet = { scene: "随机10题", date: "随机", topic: "从 " + pool.length + " 场中随机抽选 10 词", words: picked };
+  } else {
+    const src = pool[Math.floor(Math.random() * pool.length)];
+    currentSet = { ...src, words: [...src.words] };
+  }
+  currentSource = currentSet.date + "  " + currentSet.topic;
+  checked = false;
+  render();
+}
+
+function render() {
+  const list = document.getElementById("question-list");
+  const info = document.getElementById("source-info");
+  const badge = document.getElementById("scene-badge");
+  const scoreBar = document.getElementById("score-bar");
+  const newGameWrap = document.getElementById("new-game-wrap");
+
+  info.textContent = currentSource;
+  badge.textContent = currentSet.scene;
+  scoreBar.style.display = "none";
+  newGameWrap.style.display = "none";
+
+  list.innerHTML = currentSet.words.map((word, i) => {
+    const num = i + 31;
+    const ph = word ? "" : "—";
+    return `
+      <div class="question-row" id="row-${i}">
+        <span class="question-num">${num}</span>
+        <input type="text" id="inp-${i}" placeholder="${ph}" ${!word ? "disabled" : ""}
+               onkeydown="if(event.key==='Enter'){event.preventDefault();var next=document.getElementById('inp-'+(i+1));if(next&&!next.disabled){next.focus()}else{checkAll()}}">
+        ${word ? `<button class="replay-btn" onclick="replayWord(${i})" title="重听此词">&#9654;</button>` : ""}
+        <span class="feedback" id="fb-${i}"></span>
+      </div>`;
+  }).join("");
+
+  if (currentSet._special) {
+    list.insertAdjacentHTML("beforeend",
+      `<p style="margin-top:12px;font-size:13px;color:var(--ink-muted);font-style:italic">${currentSet._special}</p>`);
+  }
+}
+
+// ═══════════════ check ═══════════════
+let lastResultData = null;
+
+function checkAll() {
+  checked = true;
+  let correct = 0;
+  let total = 0;
+  let wrongList = [];
+  let wrongUserAnswers = {};
+
+  currentSet.words.forEach((word, i) => {
+    if (!word) return;
+    total++;
+    const inp = document.getElementById("inp-" + i);
+    const row = document.getElementById("row-" + i);
+    const fb  = document.getElementById("fb-" + i);
+    const userAnswer = norm(inp.value);
+    const correctAnswer = norm(word);
+
+    row.classList.remove("correct", "wrong");
+
+    if (userAnswer === correctAnswer) {
+      row.classList.add("correct");
+      fb.innerHTML = '<span class="correct-mark">&#10003; 正确</span>';
+      correct++;
+    } else {
+      row.classList.add("wrong");
+      fb.innerHTML = '&#10007; 答案：<span class="answer">' + word + '</span>';
+      wrongList.push(word);
+      wrongUserAnswers[word] = inp.value.trim();
+    }
+  });
+
+  const scoreBar = document.getElementById("score-bar");
+  const newGameWrap = document.getElementById("new-game-wrap");
+  scoreBar.style.display = "flex";
+  newGameWrap.style.display = "block";
+  document.getElementById("score-num").textContent = correct;
+  document.getElementById("score-pct").textContent = total ? Math.round(correct / total * 100) + "%" : "—";
+
+  lastResultData = { correct, total, wrongList, wrongUserAnswers };
+  if (total > 0 && currentSet.date !== "随机") {
+    saveResult();
+  }
+}
+
+// ═══════════════ start new ═══════════════
+function startNew() {
+  pickSet();
+  document.getElementById("scene-badge").scrollIntoView({ behavior: "smooth" });
+}
+
+// ═══════════════ history ═══════════════
+const LS_KEY = "ielts-p1-dictation-history";
+
+const DICT = {
+"apron":"ˈeɪprən|围裙","balcony":"ˈbælkəni|阳台","canoe":"kəˈnuː|独木舟","certificate":"sərˈtɪfɪkət|证书","citizen":"ˈsɪtɪzən|公民",
+"coin":"kɔɪn|硬币","comedy":"ˈkɒmədi|喜剧","communication":"kəˌmjuːnɪˈkeɪʃən|沟通","concert":"ˈkɒnsərt|音乐会","customer":"ˈkʌstəmər|顾客",
+"decoration":"ˌdekəˈreɪʃən|装饰","diving":"ˈdaɪvɪŋ|潜水","experience":"ɪkˈspɪəriəns|经验","festival":"ˈfestɪvəl|节日","grocery":"ˈɡrəʊsəri|杂货",
+"guitar":"ɡɪˈtɑːr|吉他","helmet":"ˈhelmɪt|头盔","insurance":"ɪnˈʃʊərəns|保险","intermediate":"ˌɪntərˈmiːdiət|中级的","judo":"ˈdʒuːdəʊ|柔道",
+"leaflet":"ˈliːflɪt|传单","leather":"ˈleðər|皮革","machine":"məˈʃiːn|机器","magazine":"ˌmæɡəˈziːn|杂志","moderate":"ˈmɒdərət|适中的",
+"neighbor":"ˈneɪbər|邻居","opera":"ˈɒpərə|歌剧","orientation":"ˌɔːriənˈteɪʃən|指导","passport":"ˈpæspɔːrt|护照","photograph":"ˈfəʊtəɡræf|照片",
+"playground":"ˈpleɪɡraʊnd|操场","projector":"prəˈdʒektər|投影仪","punctual":"ˈpʌŋktʃuəl|准时的","purple":"ˈpɜːrpəl|紫色","sunscreen":"ˈsʌnskriːn|防晒霜",
+"theatre":"ˈθɪətər|剧院","trousers":"ˈtraʊzərz|裤子","vegetarian":"ˌvedʒɪˈteəriən|素食者","waitress":"ˈweɪtrəs|女服务员","waterproof":"ˈwɔːtərpruːf|防水的",
+"yoga":"ˈjəʊɡə|瑜伽","advertisement":"ˌædvərˈtaɪzmənt|广告","agency":"ˈeɪdʒənsi|中介","baseball":"ˈbeɪsbɔːl|棒球","basketball":"ˈbæskɪtbɔːl|篮球",
+"cafe":"ˈkæfeɪ|咖啡馆","cave":"keɪv|洞穴","cinema":"ˈsɪnəmə|电影院","driver":"ˈdraɪvər|司机","garden":"ˈɡɑːrdən|花园",
+"gym":"dʒɪm|健身房","headache":"ˈhedeɪk|头痛","hospital":"ˈhɒspɪtəl|医院","instructor":"ɪnˈstrʌktər|教练","lake":"leɪk|湖",
+"library":"ˈlaɪbrəri|图书馆","map":"mæp|地图","museum":"mjuːˈziːəm|博物馆","nurse":"nɜːrs|护士","parking":"ˈpɑːrkɪŋ|停车",
+"pasta":"ˈpæstə|意大利面","restaurant":"ˈrestərɒnt|餐厅","screen":"skriːn|屏幕","shopping":"ˈʃɒpɪŋ|购物","snack":"snæk|零食",
+"station":"ˈsteɪʃən|车站","studio":"ˈstjuːdiəʊ|工作室","supermarket":"ˈsuːpərmɑːrkɪt|超市","ticket":"ˈtɪkɪt|票","traffic":"ˈtræfɪk|交通",
+"training":"ˈtreɪnɪŋ|培训","waiter":"ˈweɪtər|服务员","weather":"ˈweðər|天气","youth":"juːθ|青年","socks":"sɒks|袜子",
+"shoes":"ʃuːz|鞋子","jeans":"dʒiːnz|牛仔裤","nylon":"ˈnaɪlɒn|尼龙","cream":"kriːm|奶油色","strap":"stræp|带子",
+"silver":"ˈsɪlvər|银","purple":"ˈpɜːrpəl|紫色","medium":"ˈmiːdiəm|中号","regular":"ˈreɡjʊlər|常规","boat":"bəʊt|船",
+"horse":"hɔːrs|马","chicken":"ˈtʃɪkɪn|鸡","shark":"ʃɑːrk|鲨鱼","bird":"bɜːrd|鸟","butter":"ˈbʌtər|黄油",
+"stone":"stəʊn|石头","glass":"ɡlæs|玻璃","wood":"wʊd|木材","gold":"ɡəʊld|金","milk":"mɪlk|牛奶",
+"juice":"dʒuːs|果汁","pizza":"ˈpiːtsə|披萨","egg":"eɡ|鸡蛋","cake":"keɪk|蛋糕","drink":"drɪŋk|饮料",
+"dinner":"ˈdɪnər|晚餐","coffee":"ˈkɒfi|咖啡","music":"ˈmjuːzɪk|音乐","band":"bænd|乐队","radio":"ˈreɪdiəʊ|收音机",
+"toy":"tɔɪ|玩具","tool":"tuːl|工具","label":"ˈleɪbəl|标签","size":"saɪz|尺寸","color":"ˈkʌlər|颜色",
+"noise":"nɔɪz|噪音","view":"vjuː|景色","stairs":"steərz|楼梯","bridge":"brɪdʒ|桥","pool":"puːl|游泳池",
+"park":"pɑːrk|公园","beach":"biːtʃ|海滩","garden":"ˈɡɑːrdən|花园","mountain":"ˈmaʊntɪn|山","lake":"leɪk|湖",
+"river":"ˈrɪvər|河","forest":"ˈfɒrɪst|森林","island":"ˈaɪlənd|岛","square":"skweər|广场","street":"striːt|街道",
+};
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+  catch (e) { return []; }
+}
+
+function saveResult() {
+  const data = lastResultData;
+  if (!data) return;
+  const entry = {
+    date: new Date().toISOString(),
+    scene: currentSet.scene,
+    topic: currentSet.topic,
+    correct: data.correct,
+    total: data.total,
+    wrong: data.wrongList,
+    userAnswers: data.wrongUserAnswers,
+  };
+  const history = loadHistory();
+  history.unshift(entry);
+  if (history.length > 200) history.length = 200;
+  localStorage.setItem(LS_KEY, JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = loadHistory();
+  const stats = document.getElementById("history-stats");
+  const list = document.getElementById("history-list");
+  const reviewBtn = document.getElementById("review-btn");
+  const toggle = document.getElementById("history-toggle");
+
+  toggle.innerHTML = "历史记录 (" + history.length + ")";
+
+  if (history.length === 0) {
+    stats.innerHTML = "暂无记录，完成一次听写批改后自动保存。";
+    list.innerHTML = "";
+    reviewBtn.style.display = "none";
+    return;
+  }
+
+  const totalAttempts = history.length;
+  const totalCorrect = history.reduce((a, e) => a + e.correct, 0);
+  const totalWords = history.reduce((a, e) => a + e.total, 0);
+  const overallPct = totalWords ? Math.round(totalCorrect / totalWords * 100) : 0;
+  const wrongPool = [...new Set(history.flatMap(e => e.wrong))];
+
+  stats.innerHTML =
+    "<span style='white-space:nowrap'>共 <strong>" + totalAttempts + "</strong> 次练习</span> &nbsp;·&nbsp; " +
+    "<span style='white-space:nowrap'>累计正确率 <strong>" + overallPct + "%</strong></span> &nbsp;·&nbsp; " +
+    "<span style='white-space:nowrap'>错词池 <strong>" + wrongPool.length + "</strong> 个</span>";
+
+  reviewBtn.style.display = wrongPool.length > 0 ? "" : "none";
+  reviewBtn.textContent = "复习全部错词（" + wrongPool.length + " 个）";
+
+  list.innerHTML = history.map((e, i) => {
+    const pct = Math.round(e.correct / e.total * 100);
+    const cls = pct >= 70 ? "good" : "bad";
+    const time = new Date(e.date);
+    const timeStr = time.getMonth() + 1 + "/" + time.getDate() + " " +
+                    String(time.getHours()).padStart(2, "0") + ":" +
+                    String(time.getMinutes()).padStart(2, "0");
+    return `
+      <div class="history-entry" id="hentry-${i}" onclick="toggleEntry(${i})">
+        <div class="entry-header">
+          <span>
+            <strong>${e.topic}</strong>
+            <span style="color:var(--ink-muted)">${e.scene} · ${timeStr}</span>
+          </span>
+          <span class="entry-score ${cls}">${e.correct}/${e.total} (${pct}%)</span>
+        </div>
+        <div class="entry-detail">
+          ${e.wrong.length ? '<div style="margin-bottom:4px;color:var(--ink-muted)">错词（点击可单独听写）：</div>' : '<span style="color:var(--correct-text)">&#10003; 全部正确</span>'}
+          ${e.wrong.map(w => {
+            const ua = e.userAnswers && e.userAnswers[w] ? '（你写的：' + e.userAnswers[w] + '）' : '';
+            return '<span class="wrong-tag" onclick="event.stopPropagation();reviewSingleWord(\'' + w.replace(/'/g, "\\'") + '\')" title="点击单独听写此词">' + w + '</span>' + ua;
+          }).join("")}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function toggleEntry(i) {
+  document.querySelectorAll(".history-entry").forEach(el => el.classList.remove("open"));
+  const el = document.getElementById("hentry-" + i);
+  if (el) el.classList.toggle("open");
+}
+
+function toggleHistory() {
+  const panel = document.getElementById("history-panel");
+  panel.classList.toggle("open");
+  if (panel.classList.contains("open")) {
+    renderHistory();
+    panel.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+function exportWrongWords() {
+  const history = loadHistory();
+  const wrongPool = [...new Set(history.flatMap(e => e.wrong))];
+  if (wrongPool.length === 0) { alert("没有错词可导出！"); return; }
+
+  wrongPool.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+  const freq = {};
+  history.forEach(e => e.wrong.forEach(w => { freq[w] = (freq[w] || 0) + 1; }));
+
+  const BOM = "﻿";
+  let csv = BOM + "Word,Phonetic,Chinese,Error Count\n";
+  wrongPool.forEach(w => {
+    const key = w.toLowerCase();
+    const entry = DICT[key];
+    const phonetic = entry ? "/" + entry.split("|")[0] + "/" : "";
+    const chinese = entry ? entry.split("|")[1] : "";
+    const count = freq[w] || 1;
+    csv += w + "," + phonetic + "," + chinese + "," + count + "\n";
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "ielts-p1-wrong-words.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearHistory() {
+  if (confirm("确定要清空全部听写记录吗？此操作不可撤销。")) {
+    localStorage.removeItem(LS_KEY);
+    renderHistory();
+    document.getElementById("history-toggle").innerHTML = "历史记录 (0)";
+  }
+}
+
+function startReviewMode() {
+  const history = loadHistory();
+  const wrongPool = [...new Set(history.flatMap(e => e.wrong))];
+  if (wrongPool.length === 0) { alert("没有错词可复习！"); return; }
+  stopDictation();
+  checked = false;
+
+  const shuffled = [...wrongPool].sort(() => Math.random() - 0.5);
+  const picked = shuffled.slice(0, 10);
+  // pad with empty strings so dictation skips them cleanly
+  while (picked.length < 10) picked.push("");
+
+  currentSet = {
+    scene: "复习模式",
+    date: "错词",
+    topic: "来自 " + wrongPool.length + " 个历史错词",
+    words: picked,
+  };
+  currentSource = "复习模式 · 历史错词 (" + wrongPool.length + " 个)";
+  document.getElementById("scene-select").value = "all";
+  render();
+  document.getElementById("source-info").scrollIntoView({ behavior: "smooth" });
+}
+
+function reviewSingleWord(word) {
+  stopDictation();
+  checked = false;
+
+  currentSet = {
+    scene: "单词复习",
+    date: "单练",
+    topic: "单词: " + word,
+    words: [word, "", "", "", "", "", "", "", "", ""],
+  };
+  currentSource = "单词复习 · " + word;
+  render();
+  const inp = document.getElementById("inp-0");
+  if (inp) inp.focus();
+
+  loadVoices();
+  setTimeout(() => {
+    const utterance = new SpeechSynthesisUtterance(word);
+    const voice = getVoice();
+    if (voice) utterance.voice = voice;
+    utterance.volume = 1.0;
+    speechSynthesis.speak(utterance);
+  }, 200);
+}
+
+// ═══════════════ speech dictation ═══════════════
+let dictationRunning = false;
+let dictationIdx = 0;
+let dictationTimer = null;
+
+let cachedVoices = [];
+let selectedVoiceName = null;
+
+function loadVoices() {
+  cachedVoices = speechSynthesis.getVoices();
+  if (cachedVoices.length === 0) {
+    const dummy = new SpeechSynthesisUtterance("");
+    dummy.volume = 0; dummy.rate = 2;
+    speechSynthesis.speak(dummy);
+    setTimeout(() => { cachedVoices = speechSynthesis.getVoices(); populateVoiceSelect(); }, 150);
+    return;
+  }
+  populateVoiceSelect();
+}
+
+function getEnglishVoices() {
+  const voices = cachedVoices.length ? cachedVoices : speechSynthesis.getVoices();
+  return voices.filter(v => v.lang.startsWith("en-"));
+}
+
+function getVoice() {
+  const english = getEnglishVoices();
+  if (english.length === 0) return null;
+
+  // if user selected a specific voice, use it
+  if (selectedVoiceName) {
+    const match = english.find(v => v.name === selectedVoiceName);
+    if (match) return match;
+  }
+
+  // prefer Samantha if available
+  const sam = english.find(v => v.name === "Samantha");
+  if (sam) return sam;
+
+  // prioritize Google neural voices (clearest on Chrome)
+  const google = english.filter(v => v.name.includes("Google"));
+  if (google.length) {
+    const femaleGoogle = google.find(v => v.name.toLowerCase().includes("female") || v.name.includes("Female"));
+    return femaleGoogle || google[0];
+  }
+
+  // next best: Microsoft or Natural voices
+  const natural = english.find(v => v.name.includes("Natural") || v.name.includes("Premium"));
+  if (natural) return natural;
+
+  // fallback: any UK or US voice
+  const gb = english.filter(v => v.lang === "en-GB");
+  if (gb.length) return gb[0];
+  const us = english.filter(v => v.lang === "en-US");
+  if (us.length) return us[0];
+
+  return english[0];
+}
+
+function populateVoiceSelect() {
+  const sel = document.getElementById("voice-select");
+  if (!sel) return;
+  const english = getEnglishVoices();
+  if (english.length === 0) { sel.innerHTML = '<option>加载中...</option>'; return; }
+
+  const currentVal = sel.value;
+  sel.innerHTML = english.map(v => {
+    const label = v.name + (v.name.includes("Google") ? " ★" : "");
+    const selAttr = (!selectedVoiceName && v.name === "Samantha") ? " selected" : "";
+    return '<option value="' + v.name + '"' + selAttr + '>' + label + '</option>';
+  }).join("");
+
+  // restore selection if available
+  if (currentVal && english.find(v => v.name === currentVal)) {
+    sel.value = currentVal;
+  }
+
+  // set default selectedVoiceName
+  if (!selectedVoiceName && english.length) {
+    const sam = english.find(v => v.name === "Samantha");
+    selectedVoiceName = sel.value || (sam ? sam.name : english[0].name);
+  }
+}
+
+function onVoiceChange() {
+  const sel = document.getElementById("voice-select");
+  if (sel) selectedVoiceName = sel.value;
+}
+
+function testVoice() {
+  const word = "foundation";
+  speechSynthesis.cancel();
+  setTimeout(() => {
+    const u = new SpeechSynthesisUtterance(word);
+    const voice = getVoice();
+    if (voice) u.voice = voice;
+    u.rate = parseFloat(document.getElementById("speed-select").value);
+    u.volume = 1.0;
+    speechSynthesis.speak(u);
+  }, 80);
+}
+
+loadVoices();
+speechSynthesis.onvoiceschanged = () => { cachedVoices = speechSynthesis.getVoices(); populateVoiceSelect(); };
+
+function speakWord(idx) {
+  if (idx >= currentSet.words.length || !dictationRunning) return;
+  const word = currentSet.words[idx];
+  if (!word) { advanceDictation(); return; }
+
+  document.querySelectorAll(".question-row").forEach(r => r.classList.remove("listening"));
+  const row = document.getElementById("row-" + idx);
+  if (row) row.classList.add("listening");
+
+  const utterance = new SpeechSynthesisUtterance(word);
+  const voice = getVoice();
+  if (voice) utterance.voice = voice;
+  utterance.rate = parseFloat(document.getElementById("speed-select").value);
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+
+  utterance.onend = () => {
+    const gap = parseFloat(document.getElementById("gap-select").value) * 1000;
+    const inp = document.getElementById("inp-" + idx);
+    if (inp && !inp.disabled) {
+      setTimeout(() => { if (dictationRunning) inp.focus(); }, 150);
+    }
+    dictationTimer = setTimeout(() => advanceDictation(), gap);
+  };
+
+  utterance.onerror = (e) => {
+    console.log("Speech error on word " + idx + ": " + e.error);
+    if (e.error !== "canceled" && e.error !== "interrupted") {
+      dictationTimer = setTimeout(() => advanceDictation(), 800);
+    }
+  };
+
+  speechSynthesis.speak(utterance);
+}
+
+function advanceDictation() {
+  dictationIdx++;
+  if (dictationIdx >= currentSet.words.length) {
+    stopDictation();
+    const inp = document.getElementById("inp-0");
+    if (inp) setTimeout(() => inp.focus(), 300);
+    return;
+  }
+  speakWord(dictationIdx);
+}
+
+let dictationState = "idle";
+
+function startDictation() {
+  const btn = document.getElementById("dictation-btn");
+
+  if (dictationState === "running") {
+    dictationState = "paused";
+    dictationRunning = false;
+    if (dictationTimer) clearTimeout(dictationTimer);
+    speechSynthesis.cancel();
+    document.querySelectorAll(".question-row").forEach(r => r.classList.remove("listening"));
+    btn.textContent = "继续";
+    btn.classList.remove("running");
+    return;
+  }
+
+  if (dictationState === "paused") {
+    dictationState = "running";
+    dictationRunning = true;
+    btn.textContent = "暂停";
+    btn.classList.add("running");
+    loadVoices();
+    setTimeout(() => {
+      if (dictationState !== "running") return;
+      speakWord(dictationIdx);
+    }, 150);
+    return;
+  }
+
+  checked = false;
+  dictationIdx = 0;
+  dictationState = "running";
+  dictationRunning = true;
+
+  currentSet.words.forEach((_, i) => {
+    const inp = document.getElementById("inp-" + i);
+    if (inp) inp.value = "";
+    const row = document.getElementById("row-" + i);
+    if (row) { row.classList.remove("correct", "wrong", "listening"); }
+    const fb = document.getElementById("fb-" + i);
+    if (fb) fb.innerHTML = "";
+  });
+
+  document.getElementById("score-bar").style.display = "none";
+  document.getElementById("new-game-wrap").style.display = "none";
+
+  btn.textContent = "暂停";
+  btn.classList.add("running");
+
+  loadVoices();
+  setTimeout(() => {
+    if (dictationState !== "running") return;
+    speakWord(0);
+  }, 150);
+}
+
+function stopDictation() {
+  dictationRunning = false;
+  dictationState = "idle";
+  dictationIdx = 0;
+  if (dictationTimer) clearTimeout(dictationTimer);
+  dictationTimer = null;
+  speechSynthesis.cancel();
+
+  document.querySelectorAll(".question-row").forEach(r => r.classList.remove("listening"));
+  const btn = document.getElementById("dictation-btn");
+  btn.textContent = "开始听写";
+  btn.classList.remove("running");
+}
+
+function replayWord(idx) {
+  if (!currentSet || !currentSet.words[idx]) return;
+  const word = currentSet.words[idx];
+  const row = document.getElementById("row-" + idx);
+  if (row) {
+    row.classList.add("listening");
+    setTimeout(() => row.classList.remove("listening"), 1200);
+  }
+  speechSynthesis.cancel();
+  setTimeout(() => {
+    const utterance = new SpeechSynthesisUtterance(word);
+    const voice = getVoice();
+    if (voice) utterance.voice = voice;
+    utterance.rate = parseFloat(document.getElementById("speed-select").value);
+    utterance.volume = 1.0;
+    speechSynthesis.speak(utterance);
+  }, 80);
+}
+
+const _origStartNew = startNew;
+startNew = function() {
+  stopDictation();
+  _origStartNew();
+};
+
+document.getElementById("start-btn").addEventListener("click", startNew);
+document.getElementById("check-btn").addEventListener("click", checkAll);
+document.getElementById("dictation-btn").addEventListener("click", startDictation);
+
+speechSynthesis.getVoices();
+renderHistory();
+// check if custom word sets exist
+if (localStorage.getItem(DB_KEY)) {
+  rebuildSceneSelect();
+  document.getElementById("reset-db-btn").style.display = "";
+}
+pickSet();
+</script>
+
+</body>
+</html>
